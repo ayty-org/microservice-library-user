@@ -21,6 +21,7 @@ public class EditUserServiceImpl implements EditUserService {
         userLibrary.setName(userLibraryDTO.getName());
         userLibrary.setGender(userLibraryDTO.getGender());
         userLibrary.setPhone(userLibraryDTO.getPhone());
+        userLibrary.setSpecificID(userLibrary.getSpecificID());
 
         repository.save(userLibrary);
     }

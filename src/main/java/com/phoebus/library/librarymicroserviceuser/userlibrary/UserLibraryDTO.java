@@ -40,7 +40,7 @@ public class UserLibraryDTO {
     @Size(max = 1)
     private String gender;
     @NotNull
-    private UUID specificID = UUID.randomUUID();
+    private String specificID = UUID.randomUUID().toString();
 
     public static UserLibraryDTO from(UserLibrary userLibrary) {
         return UserLibraryDTO.builder()

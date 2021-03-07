@@ -42,7 +42,7 @@ public class UserLibrary implements Serializable {
     private String gender;
 
     @GeneratedValue(strategy = GenerationType.AUTO)
-        private UUID specificID = UUID.randomUUID();
+        private String specificID = UUID.randomUUID().toString();
 
     public static UserLibrary to(UserLibraryDTO userLibraryDTO) {
         return UserLibrary.builder()
