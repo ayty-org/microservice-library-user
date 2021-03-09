@@ -1,3 +1,5 @@
+server:
+  port: 9092
 #Eureka
 eureka:
   instance:
@@ -8,6 +10,10 @@ eureka:
     fetch-registry: false
     eureka-server-connect-timeout-seconds: 3000
 spring:
+  profiles:
+    active: dev
+  application:
+    name: user-service
   datasource:
     url: jdbc:postgresql://localhost:5432/user-api
     username: postgres

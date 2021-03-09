@@ -1,7 +1,9 @@
 package com.phoebus.library.librarymicroserviceuser.userlibrary.v1;
+import com.phoebus.library.librarymicroserviceuser.userlibrary.UserLibrary;
 import com.phoebus.library.librarymicroserviceuser.userlibrary.UserLibraryDTO;
 import com.phoebus.library.librarymicroserviceuser.userlibrary.service.DeleteUserService;
 import com.phoebus.library.librarymicroserviceuser.userlibrary.service.EditUserService;
+import com.phoebus.library.librarymicroserviceuser.userlibrary.service.GetSpecificIdUserLibraryService;
 import com.phoebus.library.librarymicroserviceuser.userlibrary.service.GetUserService;
 import com.phoebus.library.librarymicroserviceuser.userlibrary.service.ListPageUserService;
 import com.phoebus.library.librarymicroserviceuser.userlibrary.service.ListUserService;
@@ -33,6 +35,7 @@ public class UserLibraryControllerV1 {
     private final ListUserService listUserService;
     private final SaveUserService saveUserService;
     private final ListPageUserService listPageUserService;
+    private final GetSpecificIdUserLibraryService getSpecificIdUserLibraryService;
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -56,6 +59,11 @@ public class UserLibraryControllerV1 {
     @ResponseStatus(HttpStatus.OK)
     public UserLibraryDTO userLibraryDTObyID(@PathVariable(value="id") Long id) {
         return getUserService.getUserLibrary(id);
+    }
+
+    @GetMapping(value = "id/{specificID}") //list client by id
+    public UserLibraryDTO findSpecificID(@PathVariable(value = "specificID") String specificID) {
+        return UserLibraryDTO.from(getSpecificIdUserLibraryService.findBySpecificID(specificID));
     }
 
     @GetMapping(path = {"/page"})
