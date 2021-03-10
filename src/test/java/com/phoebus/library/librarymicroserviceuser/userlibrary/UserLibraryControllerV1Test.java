@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.phoebus.library.librarymicroserviceuser.userlibrary.exceptions.UserNotFoundException;
 import com.phoebus.library.librarymicroserviceuser.userlibrary.service.DeleteUserService;
 import com.phoebus.library.librarymicroserviceuser.userlibrary.service.EditUserService;
+import com.phoebus.library.librarymicroserviceuser.userlibrary.service.GetSpecificIdUserLibraryService;
 import com.phoebus.library.librarymicroserviceuser.userlibrary.service.GetUserService;
 import com.phoebus.library.librarymicroserviceuser.userlibrary.service.ListPageUserService;
 import com.phoebus.library.librarymicroserviceuser.userlibrary.service.ListUserService;
@@ -39,6 +40,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -80,6 +82,9 @@ public class UserLibraryControllerV1Test {
 
     @MockBean
     private SaveUserService saveUserService;
+
+    @MockBean
+    private GetSpecificIdUserLibraryService getSpecificIdUserLibraryService;
 
     @Test
     @DisplayName("Test to delete an user library when successful")
@@ -249,6 +254,23 @@ public class UserLibraryControllerV1Test {
                 .content(objectMapper.writeValueAsString(userLibrary)))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DisplayName("Test to get a specific id of UserLibrary")
+    void shouldGetSpecificIdUserLibrary() throws Exception {
+        when(getSpecificIdUserLibraryService.findBySpecificID(anyString())).thenReturn(createUserLibrary().build());
+
+        mockMvc.perform(get(URL_USERLIBRARY + "/id/{specificID}", "d2dbaa68-48c6-451e-b34f-57b5b70fc0ed").accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id",   is(1)))
+                .andExpect(jsonPath("$.name", is("Test")))
+                .andExpect(jsonPath("$.age",  is(22)))
+                .andExpect(jsonPath("$.email",is("teste@teste.com")))
+                .andExpect(jsonPath("$.phone",is("0000-0000")))
+                .andExpect(jsonPath("$.gender", is("M")));
+        verify(getSpecificIdUserLibraryService).findBySpecificID(anyString());
     }
 
     public static String readJson(String file) throws Exception {
